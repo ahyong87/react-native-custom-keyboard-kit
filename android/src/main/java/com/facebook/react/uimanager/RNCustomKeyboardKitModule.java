@@ -86,15 +86,9 @@ public class RNCustomKeyboardKitModule extends ReactContextBaseJavaModule {
 
           edit.setTag(TAG_ID, createCustomKeyboardKit(activity, tag, type));
 
-          final View.OnFocusChangeListener prevListener = edit.getOnFocusChangeListener();
-
           edit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(final View v, boolean hasFocus) {
-              // Keep the original onFocus prop of TextInput
-              if (prevListener != null) {
-                prevListener.onFocusChange(v, hasFocus);
-              }
               if (hasFocus) {
                 View keyboard = (View)edit.getTag(TAG_ID);
                 if (keyboard.getParent() == null) {
@@ -137,7 +131,6 @@ public class RNCustomKeyboardKitModule extends ReactContextBaseJavaModule {
   ReactRootView rootView = null;
 
   private View createCustomKeyboardKit(Activity activity, int tag, String type) {
-    Log.e("createCustomKeyboardKit------------->>>>>",activity.getResources().getDisplayMetrics().toString());
     RelativeLayout layout = new RelativeLayout(activity);
     rootView = new ReactRootView(this.getReactApplicationContext());
     rootView.setBackgroundColor(Color.WHITE);
@@ -151,12 +144,10 @@ public class RNCustomKeyboardKitModule extends ReactContextBaseJavaModule {
             bundle);
 
     final float scale = activity.getResources().getDisplayMetrics().density;
-    final float screenHeight = activity.getResources().getDisplayMetrics().heightPixels;
-    Log.e("Keyboard height------------->>>>>", "" + screenHeight);
-    RelativeLayout.LayoutParams lParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, Math.round(screenHeight/3) + 200);
+    RelativeLayout.LayoutParams lParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(216*scale));
     lParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
     layout.addView(rootView, lParams);
-    // activity.addContentView(layout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
+    // activity.addContentView(layout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
     return layout;
   }
 
@@ -191,42 +182,6 @@ public class RNCustomKeyboardKitModule extends ReactContextBaseJavaModule {
         int end = Math.max(edit.getSelectionEnd(), 0);
         edit.getText().replace(Math.min(start, end), Math.max(start, end),
                 text, 0, text.length());
-
-      }
-    });
-  }
-
-  @ReactMethod
-  public void setText(final int tag, final String text) {
-    UiThreadUtil.runOnUiThread(new Runnable() {
-      @Override
-      public void run() {
-        final Activity activity = getCurrentActivity();
-        final ReactEditText edit = getEditById(tag);
-        if (edit == null) {
-          return;
-        }
-
-        edit.setText(text);
-
-        // Set Cursor to the end
-        edit.setSelection(text.length());
-      }
-    });
-  }
-
-  @ReactMethod
-  public void getText(final int tag, final Promise promise) {
-    UiThreadUtil.runOnUiThread(new Runnable() {
-      @Override
-      public void run() {
-        final Activity activity = getCurrentActivity();
-        final ReactEditText edit = getEditById(tag);
-        if (edit == null) {
-          return;
-        }
-
-        promise.resolve(edit.getText().toString());
       }
     });
   }
@@ -353,18 +308,12 @@ public class RNCustomKeyboardKitModule extends ReactContextBaseJavaModule {
         if (edit == null) {
           return;
         }
-
+        
         View keyboard = (View)edit.getTag(TAG_ID);
         if (keyboard.getParent() != null) {
           ((ViewGroup) keyboard.getParent()).removeView(keyboard);
         }
       }
     });
-  }
-
-  @ReactMethod
-  public  void hideStandardKeyboard(final int tag) {
-    final ReactEditText edit = getEditById(tag);
-    ((InputMethodManager) getReactApplicationContext().getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(edit.getWindowToken(), 0);
   }
 }
