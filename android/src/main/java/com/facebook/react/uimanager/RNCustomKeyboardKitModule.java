@@ -64,7 +64,8 @@ public class RNCustomKeyboardKitModule extends ReactContextBaseJavaModule {
       try {
         edit = (ReactEditText) uii.getNativeViewHierarchyManager().resolveView(id);
       } catch (IllegalViewOperationException e) {
-
+        Log.e("CustomKeyboard", e.toString());
+        break;
       }
     }
 
