@@ -60,7 +60,13 @@ export class CustomTextInput extends Component {
     install(findNodeHandle(this.input), this.props.customKeyboardType);
   }
 
-  componentWillReceiveProps(newProps) {
+//   componentWillReceiveProps(newProps) {
+//     if (newProps.customKeyboardType !== this.props.customKeyboardType) {
+//       install(findNodeHandle(this.input), newProps.customKeyboardType);
+//     }
+//   }
+  
+  componentDidUpdate(newProps) {
     if (newProps.customKeyboardType !== this.props.customKeyboardType) {
       install(findNodeHandle(this.input), newProps.customKeyboardType);
     }
