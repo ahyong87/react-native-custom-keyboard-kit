@@ -19,6 +19,7 @@ const {
   moveLeft, moveRight,
   switchSystemKeyboard,
   hideKeyboard,
+  hideStandardKeyboard,
 } = CustomKeyboardKit;
 
 export {
@@ -27,6 +28,7 @@ export {
   moveLeft, moveRight,
   switchSystemKeyboard,
   hideKeyboard,
+  hideStandardKeyboard,
 };
 
 const keyboardTypeRegistry = {};
@@ -74,6 +76,10 @@ export class CustomTextInput extends Component {
 
   onRef = ref => {
     this.input = ref;
+  }
+  
+  hideStandardKeyboard = () => {
+        hideStandardKeyboard(findNodeHandle(this.input))
   }
 
   render() {
