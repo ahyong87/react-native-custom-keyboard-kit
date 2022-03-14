@@ -68,15 +68,27 @@ export class CustomTextInput extends Component {
 //     }
 //   }
   
-  componentDidUpdate(newProps) {
-    if (newProps.customKeyboardType !== this.props.customKeyboardType) {
-      install(findNodeHandle(this.input), newProps.customKeyboardType);
-    }
-  }
+//   componentDidUpdate(newProps) {
+//     if (newProps.customKeyboardType !== this.props.customKeyboardType) {
+//       install(findNodeHandle(this.input), newProps.customKeyboardType);
+//     }
+//   }
 
   onRef = ref => {
     this.input = ref;
   }
+  
+  focus = () => {
+        if (this.input.__isMounted && !this.input.isFocused()) {
+            this.input.focus()
+        }
+    }
+
+   blur = () => {
+        if (this.input.__isMounted && this.input.isFocused()) {
+            this.input.blur()
+        }
+    }
   
   hideStandardKeyboard = () => {
         hideStandardKeyboard(findNodeHandle(this.input))
