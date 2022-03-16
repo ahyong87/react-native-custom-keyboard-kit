@@ -68,11 +68,11 @@ export class CustomTextInput extends Component {
 //     }
 //   }
   
-//   componentDidUpdate(newProps) {
-//     if (newProps.customKeyboardType !== this.props.customKeyboardType) {
-//       install(findNodeHandle(this.input), newProps.customKeyboardType);
-//     }
-//   }
+  componentDidUpdate(newProps) {
+    if (newProps.customKeyboardType !== this.props.customKeyboardType) {
+      install(findNodeHandle(this.input), newProps.customKeyboardType);
+    }
+  }
 
   onRef = ref => {
     this.input = ref;
