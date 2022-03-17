@@ -59,7 +59,9 @@ export class CustomTextInput extends Component {
   }
 
   componentDidMount() {
-    install(findNodeHandle(this.input), this.props.customKeyboardType);
+       setTimeout(() => {
+        install(findNodeHandle(this.input), this.props.customKeyboardType);
+      }, 100)
   }
 
 //   componentWillReceiveProps(newProps) {
